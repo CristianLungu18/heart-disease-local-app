@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Formular Date Pacient - Boală Inimă</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      background: #f7f9fc;
+      padding: 25px 35px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      color: #333;
+    }
+    h2 {
+      text-align: center;
+      color: #2a7ae2;
+      margin-bottom: 30px;
+    }
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px 40px;
+      justify-content: space-between;
+    }
+    .form-group {
+      flex: 1 1 250px;
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #444;
+    }
+    input[type="number"],
+    select {
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    input[type="number"]:focus,
+    select:focus {
+      border-color: #2a7ae2;
+      outline: none;
+      box-shadow: 0 0 5px rgba(42, 122, 226, 0.5);
+    }
+    button {
+      padding: 14px;
+      background-color: #2a7ae2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.15rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #1e5ec1;
+    }
+
+    #result {
+      margin-top: 30px;
+      padding: 15px 20px;
+      background-color: #e3f2fd;
+      border: 1px solid #90caf9;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      color: #1565c0;
+      text-align: center;
+      min-height: 40px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Formular Date Pacient - Boală Inimă</h2>
+  <form id="patient-form" action="/predict" method="POST">
+
+    <div class="form-group">
+      <label for="varsta">Vârstă</label>
+      <input type="number" id="varsta" name="varsta" min="1" max="120" required />
+    </div>
+
+    <div class="form-group">
+      <label for="sex">Sex (1 = Masculin, 0 = Feminin)</label>
+      <select id="sex" name="sex" required>
+        <option value="">-- Selectați --</option>
+        <option value="1">Masculin</option>
+        <option value="0">Feminin</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="tip_durere_piept">Tip durere piept</label>
+      <select id="tip_durere_piept" name="tip_durere_piept" required>
+        <option value="">-- Selectați --</option>
+        <option value="1">Tip 1: Angină tipică</option>
+        <option value="2">Tip 2: Durere neanginală</option>
+        <option value="3">Tip 3: Durere non-anginoasă</option>
+        <option value="4">Tip 4: Asimptomatică</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="tensiune_repaus">Tensiune arterială (mm Hg)</label>
+      <input type="number" id="tensiune_repaus" name="tensiune_repaus" required />
+    </div>
+
+    <div class="form-group">
+      <label for="colesterol">Colesterol (mg/dl)</label>
+      <input type="number" id="colesterol" name="colesterol" required />
+    </div>
+
+    <div class="form-group">
+      <label for="glicemie">Glicemie pe nemâncate (0 = &lt; 120 mg/dl, 1 = &gt; 120 mg/dl)</label>
+      <select id="glicemie" name="glicemie" required>
+        <option value="">-- Selectați --</option>
+        <option value="0">0</option>
+        <option value="1">1</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="ekg_repaus">Rezultat ECG repaus(0 = normal, 1 = anomalii ale undelor ST-T, 2 = hipertrofie ventriculară stângă)</label>
+      <select id="ekg_repaus" name="ekg_repaus" required>
+        <option value="">-- Selectați --</option>
+        <option value="0">Normal</option>
+        <option value="1">Anomalii undă ST-T</option>
+        <option value="2">Hipertrofie ventriculară stângă</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="frecventa_maxima">Frecvență cardiacă maximă atinsă</label>
+      <input type="number" id="frecventa_maxima" name="frecventa_maxima" required />
+    </div>
+
+    <div class="form-group">
+      <label for="angina_efort">Angină indusă de exercițiu (0 = nu, 1 = da)</label>
+      <select id="angina_efort" name="angina_efort" required>
+        <option value="">-- Selectați --</option>
+        <option value="0">0</option>
+        <option value="1">1</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="depresie_st">Depresie ST (exercițiu comparativ cu repaus)</label>
+      <input type="number" step="0.1" id="depresie_st" name="depresie_st" required />
+    </div>
+
+    <div class="form-group">
+      <label for="panta_st">Panta segment ST(1 = ascendentă (normală), 2 = plată (posibil anormală), 3 = descendentă (adesea anormală))</label>
+      <select id="panta_st" name="panta_st" required>
+        <option value="">-- Selectați --</option>
+        <option value="0">Ascendentă</option>
+        <option value="1">Plată</option>
+        <option value="2">Descendentă</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="vase_principale_colorate">Număr vase principale colorate (0-3)</label>
+      <input type="number" id="vase_principale_colorate" name="vase_principale_colorate" required />
+    </div>
+
+    <div class="form-group">
+      <label for="talasemie">Talassemie( 3 = normal, 6 = defect fix,7 = defect reversibil)</label>
+      <select id="talasemie" name="talasemie" required>
+        <option value="">-- Selectați --</option>
+        <option value="1">Normal</option>
+        <option value="2">Defect reversibil</option>
+        <option value="3">Defect fix</option>
+      </select>
+    </div>
+
+    <button type="submit">Trimite</button>
+  </form>
+
+  <div id="result">{{mesaj}}</div>
+
+</body>
+</html>
